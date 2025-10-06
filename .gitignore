@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 reports
 logs
+dependency-reduced-pom.xml
+screenshots
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

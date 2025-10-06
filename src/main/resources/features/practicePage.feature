@@ -2,8 +2,8 @@ Feature: Validating the Practice Page
   @reg
   Scenario: Automation Practice Webpage
     Given Goto automation practice webpage
-#    When Radio button clicked
-#    Then Validate radio button clicked
+    When Radio button clicked
+    Then Validate radio button clicked
 #
 #  @smoke
 #  Scenario: Valid login

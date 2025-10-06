@@ -8,7 +8,6 @@ import utils.ScreenshotUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class Hooks {
     WebDriver driver = DriverFactory.getDriver();
