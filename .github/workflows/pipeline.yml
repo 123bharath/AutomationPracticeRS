@@ -1,0 +1,30 @@
+name: Run Specific Cucumber Feature
+
+on:
+  workflow_dispatch:
+    inputs:
+      featureFile:
+        description: 'Choose which feature file to run'
+        required: true
+        type: choice
+        options:
+          - src/main/resources/features/practicePage.feature
+jobs:
+  run-feature:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build project
+        run: mvn clean compile
+
+      - name: Run selected feature file
+        run: mvn test -Dcucumber.features="${{ github.event.inputs.featureFile }}"
