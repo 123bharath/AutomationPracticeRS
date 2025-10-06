@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       runType:
-        description: 'Choose to run by feature file or by headless'
+        description: 'Choose to run by feature file or headless'
         required: true
         type: choice
         options:
           - feature
-          - tag
+          - headless
       featureFile:
         description: 'Choose which feature file to run'
         required: false
@@ -22,6 +22,7 @@ on:
         type: choice
         options:
           - headless
+
 jobs:
   run-feature:
     runs-on: ubuntu-latest
@@ -39,16 +40,19 @@ jobs:
       - name: Build project
         run: mvn clean compile
 
-      - name: Run selected feature file
+      - name: Run selected feature file or headless
+        shell: bash
         run: |
           echo "Selected Run Type: ${{ github.event.inputs.runType }}"
-          
+
           if [ "${{ github.event.inputs.runType }}" == "feature" ]; then
-            echo "Running feature file(s): ${{ github.event.inputs.featureFiles }}"
-            mvn test -Dcucumber.features="${{ github.event.inputs.featureFiles }}"
+            echo "Running feature file: ${{ github.event.inputs.featureFile }}"
+            mvn test "-Dcucumber.features=${{ github.event.inputs.featureFile }}"
+
           elif [ "${{ github.event.inputs.runType }}" == "headless" ]; then
-            echo "Running tag(s): ${{ github.event.inputs.headless }}"
+            echo "Running in headless mode"
             mvn test -Dheadless=true
+
           else
             echo "Invalid runType selected"
             exit 1
