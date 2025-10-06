@@ -6,6 +6,7 @@ reports
 logs
 dependency-reduced-pom.xml
 screenshots
+Dump
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
