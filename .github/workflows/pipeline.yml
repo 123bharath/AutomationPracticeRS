@@ -3,12 +3,25 @@ name: Run Specific Cucumber Feature
 on:
   workflow_dispatch:
     inputs:
-      featureFile:
-        description: 'Choose which feature file to run'
+      runType:
+        description: 'Choose to run by feature file or by headless'
         required: true
         type: choice
         options:
+          - feature
+          - tag
+      featureFile:
+        description: 'Choose which feature file to run'
+        required: false
+        type: choice
+        options:
           - src/main/resources/features/practicePage.feature
+      headless:
+        description: 'Choose headless to run'
+        required: false
+        type: choice
+        options:
+          - headless
 jobs:
   run-feature:
     runs-on: ubuntu-latest
@@ -27,4 +40,16 @@ jobs:
         run: mvn clean compile
 
       - name: Run selected feature file
-        run: mvn test -Dcucumber.features="${{ github.event.inputs.featureFile }}"
+        run: |
+          echo "Selected Run Type: ${{ github.event.inputs.runType }}"
+          
+          if [ "${{ github.event.inputs.runType }}" == "feature" ]; then
+            echo "Running feature file(s): ${{ github.event.inputs.featureFiles }}"
+            mvn test -Dcucumber.features="${{ github.event.inputs.featureFiles }}"
+          elif [ "${{ github.event.inputs.runType }}" == "headless" ]; then
+            echo "Running tag(s): ${{ github.event.inputs.headless }}"
+            mvn test -Dheadless=true
+          else
+            echo "Invalid runType selected"
+            exit 1
+          fi

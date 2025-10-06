@@ -21,6 +21,9 @@ public class DriverFactory {
             // System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
 
             ChromeOptions options = new ChromeOptions();
+            if(Boolean.parseBoolean(System.getProperty("headless"))) {
+                options.addArguments("--headless");
+            }
             options.addArguments("--start-maximized");
             options.addArguments("--disable-notifications");
 
